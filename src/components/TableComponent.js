@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components'
 import { useTable, useFlexLayout, useColumnOrder, useResizeColumns, useSortBy, usePagination } from 'react-table';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Table from 'react-bootstrap/Table';
+import {Table, Button} from 'react-bootstrap';
 import {isMobile} from 'react-device-detect';
 const Styles = styled.div`
           .pagination {
             padding: 0.5rem;
+            justify-content: flex-end;
           }
           .resizer {
             display: inline-block;
@@ -95,8 +96,8 @@ const TableComponent = ({data, columns, defaultColumn, hiddenColumnMobile}) => {
 
     return (
         <Styles>
-            <button onClick={resetResizing}>Reset Resizing</button>
-            <button onClick={() => randomizeColumns()}>Randomize Columns</button>
+            <Button variant="outline-primary m-2" size="sm" onClick={resetResizing}>Reset Resizing</Button>
+            <Button variant="outline-secondary m-2" size="sm" onClick={() => randomizeColumns()}>Randomize Columns</Button>
             <Table responsive striped bordered hover size="sm" {...getTableProps()}>
                 <thead>
                 {headerGroups.map(headerGroup => (
@@ -136,37 +137,40 @@ const TableComponent = ({data, columns, defaultColumn, hiddenColumnMobile}) => {
                 </tbody>
             </Table>
             <div className="pagination">
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                <Button variant="outline-primary m-2"  onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {'<<'}
-                </button>{' '}
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                </Button>{' '}
+                <Button variant="outline-primary m-2"  onClick={() => previousPage()} disabled={!canPreviousPage}>
                     {'<'}
-                </button>{' '}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
+                </Button>{' '}
+                <Button variant="outline-primary m-2"  onClick={() => nextPage()} disabled={!canNextPage}>
                     {'>'}
-                </button>{' '}
-                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                </Button>{' '}
+                <Button variant="outline-primary m-2"  onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
                     {'>>'}
-                </button>{' '}
-                <span>
-                  Page{' '}
-                            <strong>
-                    {pageIndex + 1} of {pageOptions.length}
-                  </strong>{' '}
-                </span>
-                        <span>
-                  | Go to page:{' '}
-                            <input
-                                type="number"
-                                defaultValue={pageIndex + 1}
-                                onChange={e => {
-                                    const page = e.target.value ? Number(e.target.value) - 1 : 0
-                                    gotoPage(page)
-                                }}
-                                style={{ width: '100px' }}
-                            />
-                </span>{' '}
+                </Button>{' '}
+                {!isMobile && <div className="align-self-center ml-2 mr-2">
+                    <span>
+                      Page{' '}
+                                <strong>
+                        {pageIndex + 1} of {pageOptions.length}
+                      </strong>{' '}
+                    </span>
+                            <span>
+                      | Go to page:{' '}
+                                <input
+                                    type="number"
+                                    defaultValue={pageIndex + 1}
+                                    onChange={e => {
+                                        const page = e.target.value ? Number(e.target.value) - 1 : 0
+                                        gotoPage(page)
+                                    }}
+                                    style={{ width: '100px' }}
+                                />
+                    </span>{' '}
+                </div>}
                 <select
+                    className="form-select"
                     value={pageSize}
                     onChange={e => {
                         setPageSize(Number(e.target.value))
