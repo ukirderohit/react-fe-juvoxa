@@ -1,0 +1,1 @@
+export const BASE_API_URL = 'https://canopy-frontend-task.now.sh/api/transactions';
